@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 # Install Python packages
-COPY wealthbridge/requirements.txt /tmp/
+COPY requirements.txt /tmp/
 RUN pip install --upgrade pip && pip install -r /tmp/requirements.txt
 
 # -------- STAGE 2: Runtime Stage --------
