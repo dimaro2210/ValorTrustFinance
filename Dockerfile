@@ -1,6 +1,7 @@
 # -------- STAGE 1: Build Stage using mise --------
 FROM debian:bullseye-slim AS builder
 
+# Force source compilation of Python
 ENV MISE_SETTINGS_PYTHON_COMPILE=1
 
 # Install build tools and dependencies
@@ -14,10 +15,13 @@ RUN apt-get update && apt-get install -y \
 RUN curl https://mise.run | sh
 ENV PATH="/root/.local/share/mise/shims:/root/.local/share/mise/bin:$PATH"
 
-# Install Python using mise
+# Explicitly force source build (important!)
+RUN mise settings set python_compile true
+
+# Install Python from source using mise
 RUN mise use -g python@3.12
 
-# Upgrade pip and install Python packages
+# Install Python packages
 COPY wealthbridge/requirements.txt /tmp/
 RUN pip install --upgrade pip && pip install -r /tmp/requirements.txt
 
@@ -27,17 +31,16 @@ FROM debian:bullseye-slim
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Set working directory
 WORKDIR /app
 
 # Install runtime dependencies
 RUN apt-get update && apt-get install -y libpq-dev && rm -rf /var/lib/apt/lists/*
 
-# Copy Python install from mise (copy entire Python install dir)
+# Copy compiled Python from builder
 COPY --from=builder /root/.local/share/mise/installs/python/3.12 /opt/python
 ENV PATH="/opt/python/bin:$PATH"
 
-# Copy Python packages installed into site-packages
+# Copy shim binaries (like `python`, `pip`, etc.)
 COPY --from=builder /root/.local/share/mise/shims /usr/local/bin
 
 # Copy your Django app
@@ -49,6 +52,7 @@ RUN python manage.py collectstatic --no-input && \
     python manage.py migrate && \
     python manage.py create_admin || echo "Admin user creation skipped."
 
-# Expose port and launch app
+# Expose Django port
 EXPOSE 8000
+
 CMD ["gunicorn", "wealthbridge.wsgi:application", "--bind", "0.0.0.0:8000"]
