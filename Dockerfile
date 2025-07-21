@@ -6,6 +6,9 @@ RUN apt-get update && apt-get install -y \
     build-essential libssl-dev libpq-dev libffi-dev curl unzip git \
     && rm -rf /var/lib/apt/lists/*
 
+# Set environment to force mise to compile Python from source
+ENV MISE_SETTINGS_PYTHON_COMPILE=1
+
 # Set working directory
 WORKDIR /app
 
