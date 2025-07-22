@@ -6,6 +6,8 @@ primary_region = "phx"
 
 [env]
   MISE_SETTINGS_PYTHON_COMPILE = "1"
+  PYTHONDONTWRITEBYTECODE = "1"
+  PYTHONUNBUFFERED = "1"
 
 [http_service]
   internal_port = 8000
