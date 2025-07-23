@@ -1,0 +1,26 @@
+name: Deploy to Fly.io
+
+on:
+  push:
+    branches:
+      - main  # or use "master" if that's your default
+
+jobs:
+  deploy:
+    name: Deploy app using Docker
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Flyctl
+        run: |
+          curl -L https://fly.io/install.sh | sh
+          echo "$HOME/.fly/bin" >> $GITHUB_PATH
+
+      - name: Deploy to Fly.io
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        run: |
+          flyctl deploy --remote-only
