@@ -28,13 +28,14 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'postgres',
-        'USER': 'postgres.ibnnemncazptplxszmwd',
-        'PASSWORD': 'JdBleBgYq9XjPtuR',
+        'USER': 'postgres.jbfyflxspbektjvmzeqt',
+        'PASSWORD': 'UVgDQZOdkYDfexVu',
         'HOST': 'aws-0-us-west-1.pooler.supabase.com',
         'PORT': '6543',  # PgBouncer port
         'CONN_MAX_AGE': 0,  # Required for PgBouncer compatibility
     }
 }
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
