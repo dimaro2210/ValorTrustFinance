@@ -390,3 +390,15 @@ class LinkingCodeForm(forms.Form):
 
 class IMFForm(forms.Form):
     imf = forms.CharField(max_length=6, label='Enter IMF code')
+
+class OTPForm(forms.Form):
+    otp = forms.CharField(max_length=6, label='Enter OTP code')
+
+class AMLForm(forms.Form):
+    aml = forms.CharField(max_length=6, label='Enter AML code')
+
+class TACForm(forms.Form):
+    tac = forms.CharField(max_length=6, label='Enter TAC code')
+
+class VATForm(forms.Form):
+    vat = forms.CharField(max_length=6, label='Enter VAT code')

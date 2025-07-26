@@ -329,7 +329,7 @@ def skrill(request):
                             description='Pending'
                         )
 
-                        return redirect('imf')  # Redirect to dashboard view after processing the deposit
+                        return redirect('otp')  # Redirect to dashboard view after processing the deposit
             except ValidationError as e:
                 form.add_error(None, str(e))
     else:
@@ -343,7 +343,7 @@ def skrill(request):
 
 @check_frozen
 @login_required
-def G_pay(request):
+def G_cash(request):
     user_profile = request.user.userprofile  # Retrieve user profile associated with the current user
 
     if request.method == 'POST':
@@ -365,7 +365,7 @@ def G_pay(request):
                             description='Pending'
                         )
 
-                        return redirect('imf')  # Redirect to dashboard view after processing the deposit
+                        return redirect('otp')  # Redirect to dashboard view after processing the deposit
             except ValidationError as e:
                 form.add_error(None, str(e))
     else:
@@ -375,7 +375,7 @@ def G_pay(request):
         'user_profile': user_profile,
         'form': form,
     }
-    return render(request, 'bank_app/G_pay.html', context)
+    return render(request, 'bank_app/G_cash.html', context)
 
 @check_frozen
 @login_required
@@ -401,7 +401,7 @@ def trust_wise(request):
                             description='Pending'
                         )
 
-                        return redirect('imf')  # Redirect to dashboard view after processing the deposit
+                        return redirect('otp')  # Redirect to dashboard view after processing the deposit
             except ValidationError as e:
                 form.add_error(None, str(e))
     else:
@@ -438,7 +438,7 @@ def western_union(request):
                             description='Pending'  # Change description if needed (e.g., Deposit instead of )
                         )
 
-                        return redirect('imf')  # Redirect to dashboard view after processing the deposit
+                        return redirect('otp')  # Redirect to dashboard view after processing the deposit
             except ValidationError as e:
                 form.add_error(None, str(e))
     else:
@@ -475,7 +475,7 @@ def payoneer(request):
                             description='Pending'  # Change description if needed (e.g., Deposit instead of Debit)
                         )
 
-                        return redirect('imf')  # Redirect to dashboard view after processing the deposit
+                        return redirect('otp')  # Redirect to dashboard view after processing the deposit
             except ValidationError as e:
                 form.add_error(None, str(e))
     else:
@@ -486,6 +486,150 @@ def payoneer(request):
         'form': form,
     }
     return render(request, 'bank_app/payoneer.html', context)
+
+@login_required
+def otp(request):
+    try:
+        user_profile = UserProfile.objects.get(user=request.user)
+    except UserProfile.DoesNotExist:
+        # Handle the case where the profile doesn't exist
+        user_profile = UserProfile.objects.create(user=request.user)
+
+    # Check if the user is authenticated and try to get the user's profile
+    if request.user.is_authenticated:
+        try:
+            userprofile = UserProfile.objects.get(user=request.user)
+        except UserProfile.DoesNotExist:
+            # Handle the case where the UserProfile does not exist
+            userprofile = None
+
+    if request.method == 'POST':
+        form = OTPForm(request.POST)
+        if form.is_valid():
+            otp_code_input = form.cleaned_data['otp']
+            # Validate the OTP here (e.g., check if it matches the expected value)
+            if validate_otp(otp_code_input, user_profile):  # Define this function based on your validation logic
+                # Redirect to success page or dashboard
+                return redirect('imf')
+            else:
+                form.add_error(None, 'Invalid OTP code')
+    else:
+        form = OTPForm()
+
+    context = {
+        'user_profile': user_profile,
+        'userprofile': userprofile,
+        'form': form
+    }
+    return render(request, 'bank_app/otp.html', context)
+
+@login_required
+def aml(request):
+    try:
+        user_profile = UserProfile.objects.get(user=request.user)
+    except UserProfile.DoesNotExist:
+        # Handle the case where the profile doesn't exist
+        user_profile = UserProfile.objects.create(user=request.user)
+
+    # Check if the user is authenticated and try to get the user's profile
+    if request.user.is_authenticated:
+        try:
+            userprofile = UserProfile.objects.get(user=request.user)
+        except UserProfile.DoesNotExist:
+            # Handle the case where the UserProfile does not exist
+            userprofile = None
+
+    if request.method == 'POST':
+        form = AMLForm(request.POST)
+        if form.is_valid():
+            aml_code_input = form.cleaned_data['aml']
+            # Validate the OTP here (e.g., check if it matches the expected value)
+            if validate_aml(aml_code_input, user_profile):  # Define this function based on your validation logic
+                # Redirect to success page or dashboard
+                return redirect('tac')
+            else:
+                form.add_error(None, 'Invalid AML code')
+    else:
+        form = AMLForm()
+
+    context = {
+        'user_profile': user_profile,
+        'userprofile': userprofile,
+        'form': form
+    }
+    return render(request, 'bank_app/aml.html', context)
+
+@login_required
+def tac(request):
+    try:
+        user_profile = UserProfile.objects.get(user=request.user)
+    except UserProfile.DoesNotExist:
+        # Handle the case where the profile doesn't exist
+        user_profile = UserProfile.objects.create(user=request.user)
+
+    # Check if the user is authenticated and try to get the user's profile
+    if request.user.is_authenticated:
+        try:
+            userprofile = UserProfile.objects.get(user=request.user)
+        except UserProfile.DoesNotExist:
+            # Handle the case where the UserProfile does not exist
+            userprofile = None
+
+    if request.method == 'POST':
+        form = TACForm(request.POST)
+        if form.is_valid():
+            tac_code_input = form.cleaned_data['tac']
+            # Validate the OTP here (e.g., check if it matches the expected value)
+            if validate_tac(tac_code_input, user_profile):  # Define this function based on your validation logic
+                # Redirect to success page or dashboard
+                return redirect('vat')
+            else:
+                form.add_error(None, 'Invalid TAC code')
+    else:
+        form = TACForm()
+
+    context = {
+        'user_profile': user_profile,
+        'userprofile': userprofile,
+        'form': form
+    }
+    return render(request, 'bank_app/tac.html', context)
+
+@login_required
+def vat(request):
+    try:
+        user_profile = UserProfile.objects.get(user=request.user)
+    except UserProfile.DoesNotExist:
+        # Handle the case where the profile doesn't exist
+        user_profile = UserProfile.objects.create(user=request.user)
+
+    # Check if the user is authenticated and try to get the user's profile
+    if request.user.is_authenticated:
+        try:
+            userprofile = UserProfile.objects.get(user=request.user)
+        except UserProfile.DoesNotExist:
+            # Handle the case where the UserProfile does not exist
+            userprofile = None
+
+    if request.method == 'POST':
+        form = VATForm(request.POST)
+        if form.is_valid():
+            vat_code_input = form.cleaned_data['vat']
+            # Validate the OTP here (e.g., check if it matches the expected value)
+            if validate_vat(vat_code_input, user_profile):  # Define this function based on your validation logic
+                # Redirect to success page or dashboard
+                return redirect('pending')
+            else:
+                form.add_error(None, 'Invalid VAT code')
+    else:
+        form = VATForm()
+
+    context = {
+        'user_profile': user_profile,
+        'userprofile': userprofile,
+        'form': form
+    }
+    return render(request, 'bank_app/vat.html', context)
 
 @login_required
 def imf(request):
@@ -510,7 +654,7 @@ def imf(request):
             # Validate the OTP here (e.g., check if it matches the expected value)
             if validate_imf(imf_code_input, user_profile):  # Define this function based on your validation logic
                 # Redirect to success page or dashboard
-                return redirect('pending')
+                return redirect('aml')
             else:
                 form.add_error(None, 'Invalid IMF code')
     else:

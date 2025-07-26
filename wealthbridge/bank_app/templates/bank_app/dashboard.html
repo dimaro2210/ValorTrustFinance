@@ -656,7 +656,7 @@ small{
 
         <div class="bo1 bounce-in">
             <h4>Refundable Balance</h4>
-               <span class="bill">{{user_profile.currency}} 0.00</span>
+               <span class="bill">{{user_profile.currency}} {{ user_profile.refund_balance|intcomma }}</span>
         </div>
    </div>
 

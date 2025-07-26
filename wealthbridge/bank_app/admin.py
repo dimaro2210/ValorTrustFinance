@@ -3,7 +3,7 @@ from .models import UserProfile, Transaction
 
 @admin.register(UserProfile)
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ['user', 'account_number', 'otp_code', 'imf_code', 'aml_code', 'tac_code', 'vat_code', 'linking_code', 'balance', 'card_number', 'cvv', 'expiry_date']  # Include balance in the admin list
+    list_display = ['user', 'account_number', 'otp_code', 'imf_code', 'aml_code', 'tac_code', 'vat_code', 'linking_code', 'balance', 'refund_balance', 'card_number', 'cvv', 'expiry_date']  # Include balance in the admin list
     search_fields = ['user__username']  # Search by username
 
     def save_model(self, request, obj, form, change):

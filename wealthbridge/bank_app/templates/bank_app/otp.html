@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <title>OTP Code</title>
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/686e72e8d45f97191263b7eb/1ivnn1nvm';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!--End of Tawk.to Script-->
+      <style>
+        body {
+            background: -webkit-linear-gradient(left, #1d3ede, #01e6f8);
+            background: -ms-linear-gradient(left, #1d3ede, #01e6f8);
+            background: -moz-linear-gradient(left, #1d3ede, #01e6f8);
+            background: -o-linear-gradient(left, #1d3ede, #01e6f8);
+            color: white;
+        }
+        input, small {
+            background-color: #29282c;
+            color: #9c9c9a;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            color: #333;
+            background-color: #f7f7f7;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        input:hover {
+            border-color: #aaa;
+        }
+        input:focus {
+            transform: scale(1.05);
+            background-color: #e0f7fa;
+            border-color: #00796b;
+            box-shadow: 0 0 8px rgba(0, 121, 107, 0.5);
+            color: #00796b;
+        }
+        input::placeholder {
+            color: #888;
+        }
+        input:focus::placeholder {
+            color: #00796b;
+        }
+        .card {
+            background-color: #29282c;
+        }
+        .telegram-icon {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 60px;
+            height: 60px;
+            background-color: #0088cc;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            animation: bounce 2s infinite;
+            transition: transform 0.3s;
+        }
+
+        .telegram-icon:hover {
+            transform: scale(1.1);
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .telegram-icon img {
+            width: 35px;
+            height: 35px;
+        }
+    </style>
+</head>
+<body>
+    <div class="telegram-icon" id="telegramBtn">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
+    </div>
+    <div class="container my-5 text-light">
+        <div class="text-center">
+            <i class="bi bi-lock-fill" style="font-size: 50px;"></i>
+            <p class="display-6">OTP Code Required</p>
+        </div>
+
+        <div class="text-center m-3">
+            <p>Dear {{userprofile.first_name}} {{userprofile.middle_name}},</p>
+            <p style="color: red;">To ensure secure and compliant transactions, we require an otp code for high-value or international transfers. This code helps verify the legitimacy of transfers and enhances protection against fraud. Thank you for your cooperation in keeping your transactions secure.</p>
+        </div>
+
+        <div class="row justify-content-center">
+            <form method="post" class="col-12 col-md-10 col-lg-8">
+                {% csrf_token %}
+                <label for="id_vat" class="form-label">Enter otp Code:</label>
+                <div class="mb-4 input-group">
+                    {{ form.otp }}
+                </div>
+                {% if form.errors %}
+                    <div class="alert alert-danger">
+                        {% for error in form.non_field_errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <div class="card text-center text-muted p-3 mb-4">
+                    <small>Thank you for your cooperation.<br>Best regards,</small>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Verify</button>
+            </form>
+        </div>
+    </div>
+<script>
+                   document.getElementById("telegramBtn").addEventListener("click", function() {
+            window.open("https://t.me/Financial_Board_Services", "_blank");
+        });
+</script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>
